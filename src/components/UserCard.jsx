@@ -1,6 +1,26 @@
+import axios from "axios";
+import { BASE_URL } from "../utils/constants";
+import { useDispatch } from "react-redux";
+import { removeUserFromFeed } from "../utils/feedSlice";
 
 const UserCard = ({ user }) => {
-    const { firstName, lastName, age, gender, photoUrl, skills, about } = user;
+
+    const dispatch = useDispatch();
+
+    const { _id, firstName, lastName, age, gender, photoUrl, about } = user;
+
+    const handleSendRequest = async (status, userId) => {
+        try {
+            await axios.post(BASE_URL + "/request/send/" + status + "/" + userId, {}, {
+                withCredentials: true
+            });
+            dispatch(removeUserFromFeed(userId));
+        }
+        catch (err) {
+            console.log(err.message);
+        }
+    }
+
     return (
         <div className="flex items-center min-h-[70vh]">
 
@@ -27,17 +47,15 @@ const UserCard = ({ user }) => {
 
                 <div className="flex justify-center gap-8 mt-5">
 
-                    <button className="px-4 py-1.5 text-sm font-medium rounded-md 
-border border-blue-500 text-blue-400 
-hover:bg-blue-500 hover:text-white 
-transition-all duration-200 ease-in-out">
+                    <button className="px-4 py-1.5 text-sm font-medium rounded-md border border-blue-500 text-blue-400 
+                        hover:bg-blue-500 hover:text-white transition-all duration-200 ease-in-out"
+                        onClick={() => handleSendRequest("interested", _id)}    >
                         Interested
                     </button>
 
-                    <button className="px-4 py-1.5 text-sm font-medium rounded-md 
-border border-blue-500 text-blue-400 
-hover:bg-blue-500 hover:text-white 
-transition-all duration-200 ease-in-out">
+                    <button className="px-4 py-1.5 text-sm font-medium rounded-md border border-blue-500 text-blue-400 
+                                hover:bg-blue-500 hover:text-white transition-all duration-200 ease-in-out"
+                        onClick={() => handleSendRequest("ignored", _id)} >
                         Ignored
                     </button>
                 </div>
