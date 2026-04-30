@@ -3,6 +3,7 @@ import { BASE_URL } from "../utils/constants";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addConnections } from "../utils/connectionSlice";
+import { Link } from "react-router-dom";
 
 const Connections = () => {
   const dispatch = useDispatch();
@@ -72,11 +73,11 @@ const Connections = () => {
                   {user.about || "No description available"}
                 </p>
               </div>
-
+                <Link to={"/chat/"+user._id}>
               <button className="btn btn-outline btn-primary rounded-lg px-4 hover:scale-105 transition duration-200">
                 Message
               </button>
-
+                </Link>
             </div>
           ))}
         </div>
